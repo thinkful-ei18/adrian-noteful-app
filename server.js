@@ -1,19 +1,19 @@
 'use strict';
-const express = require('express');
 
 const data = require('./db/notes');
+const simDB = require('./db/simDB');
+const notes = simDB.initialize(data);
 
 const { PORT } = require('./config');
-
 const { requestLogger } = require('./requestLogger');
 
-const { simDB } = require('./db/simDB');
+const express = require('express');
+const app = express();
 
 console.log('hello world!');
 
-const app = express();
-
 app.use(express.static('public'));
+app.use(express.json());
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
@@ -35,22 +35,52 @@ app.get('/boom', (req, res, next) => {
   throw new Error('Boom!!');
 });
 
-app.get('/v1/notes', (req, res) => {
-  const {searchTerm} = req.query;
-  // Loop through each item in the array
-  if (!searchTerm) {
-    res.json(data);
-  } else {
-    let filteredData = data.filter(item => item.title.includes(searchTerm));
-    res.json(filteredData);
-  }
+app.get('/v1/notes', (req, res, next) => {
+  const { searchTerm } = req.query;
+
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err);
+    }
+    res.json(list);
+  });
 });
 
-app.get('/v1/notes/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const foundID = data.find(item => item.id === id);
-  // console.log(foundID);
-  res.json(foundID);
+app.get('/v1/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    }
+  });
+});
+
+app.put('/v1/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  /***** Never trust users - validate input *****/
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
+
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+
+  notes.update(id, updateObj, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
 });
 
 app.use(function (req, res, next) {

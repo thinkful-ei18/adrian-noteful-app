@@ -5,7 +5,7 @@ const simDB = require('../db/simDB');
 const notes = simDB.initialize(data);
 
 // GET Notes with search
-notes.filter('cats', (err, list) => {
+notes.filter('investing', (err, list) => {
   if (err) {
     console.error(err);
   }
@@ -13,30 +13,30 @@ notes.filter('cats', (err, list) => {
 });
 
 // GET Notes by ID
-notes.find(1005, (err, item) => {
+notes.find(1090, (err, item) => {
   if (err) {
     console.error(err);
   }
   if (item) {
     console.log(item);
   } else {
-    console.log('not found');
+    console.log('you tried to find the id of a note that doesn\'t exist');
   }
 });
 
 // PUT (Update) Notes by ID
 const updateObj = {
-  title: 'New Title',
-  content: 'Blah blah blah'
+  title: 'How To Unlock Your Swag',
+  content: 'Get a cat!'
 };
 
-notes.update(1005, updateObj, (err, item) => {
+notes.update(1090, updateObj, (err, item) => {
   if (err) {
     console.error(err);
   }
   if (item) {
     console.log(item);
   } else {
-    console.log('not found');
+    console.log('you tried to update a note i can\'t find the note you\'re talking about');
   }
 });
