@@ -4,7 +4,7 @@
 const noteful = (function () {
 
   function render() {
-
+    console.log('`render` ran.');
     const notesList = generateNotesList(store.notes, store.currentNote);
     $('.js-notes-list').html(notesList);
 
@@ -55,18 +55,18 @@ const noteful = (function () {
 
       const searchTerm = $('.js-note-search-entry').val();
       store.currentSearchTerm =  searchTerm ? { searchTerm } : {};
-      
+
       api.search(store.currentSearchTerm, response => {
         store.notes = response;
-        render();
       });
+      render();
     });
   }
 
   function handleNoteFormSubmit() {
     $('.js-note-edit-form').on('submit', function (event) {
       event.preventDefault();
-
+      console.log('You just clicked SAVE.');
       const editForm = $(event.currentTarget);
 
       const noteObj = {
@@ -79,9 +79,11 @@ const noteful = (function () {
       api.update(noteObj.id, noteObj, updateResponse => {
         store.currentNote = updateResponse;
 
-        render();
+        api.search(store.currentSearchTerm, response => {
+          store.notes = response;
+          render();
+        });
       });
-
     });
   }
 
