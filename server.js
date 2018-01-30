@@ -7,6 +7,8 @@ const { PORT } = require('./config');
 
 const { requestLogger } = require('./requestLogger');
 
+const { simDB } = require('./db/simDB');
+
 console.log('hello world!');
 
 const app = express();
