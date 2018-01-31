@@ -79,5 +79,19 @@ notesRouter.post('/', (req, res, next) => {
   });
 });
 
+notesRouter.delete('/:id', (req, res, next) => {
+  const id = req.params.id;
+  notes.delete(id, (err, result) => {
+    if (err) {
+      return next(err);
+    } if (result) {
+      console.log(`Deleted a bookmark with the id \`${req.params.id}\`!`);
+      res.status(204).end();
+    } else {
+      next();
+    }
+  });
+});
+
 
 module.exports = notesRouter;
