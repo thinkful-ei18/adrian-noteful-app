@@ -10,10 +10,13 @@ const express = require('express');
 const morgan = require('morgan');
 
 const app = express();
+const notesRouter = require('./router/notes.router');
 
 console.log('hello world!');
 
 app.use(morgan('dev'));
+app.use('/v1/notes', notesRouter);
+
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -29,21 +32,6 @@ app.listen(PORT, function () {
   console.info(`Server listening on ${this.address().port}`);
 }).on('error', err => {
   console.error(err);
-});
-
-app.get('/boom', (req, res, next) => {
-  throw new Error('Boom!!');
-});
-
-app.get('/v1/notes', (req, res, next) => {
-  const { searchTerm } = req.query;
-
-  notes.filter(searchTerm, (err, list) => {
-    if (err) {
-      return next(err);
-    }
-    res.json(list);
-  });
 });
 
 app.get('/v1/notes/:id', (req, res, next) => {
