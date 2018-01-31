@@ -104,6 +104,17 @@ const noteful = (function () {
     });
   }
 
+  function handleDeleteNote () {
+    $('.js-notes-list').on('click', '.js-note-delete-button', event => {
+      event.preventDefault();
+      console.log('`deleteNote` was clicked!');
+      const noteId = getNoteIdFromElement(event.currentTarget);
+      console.log(noteId);
+      
+    });
+  }
+
+
   function handleNoteStartNewSubmit() {
     $('.js-start-new-note-form').on('submit', event => {
       event.preventDefault();
@@ -117,6 +128,7 @@ const noteful = (function () {
     handleNoteSearchSubmit();
     handleNoteFormSubmit();
     handleNoteStartNewSubmit();
+    handleDeleteNote();
   }
 
   // This object contains the only exposed methods from this module:
