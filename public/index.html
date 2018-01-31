@@ -21,20 +21,10 @@
     <nav class="notes">
       <header>
         <h2>Notes</h2>
-        <article>
-          <header>
-            <h2>Note</h2>
-            <!-- New Note form -->
-            <form id="new-note-form" class="js-start-new-note-form">
-              <button type="submit">Create New Note</button>
-            </form>
-
-          </header>
-          <form id="note-edit-form" class="js-note-edit-form">
-            <form id="notes-search-form" class="js-notes-search-form">
-              <input type="text" name="searchTerm" class="js-note-search-entry" placeholder="Search for a note">
-              <button type="submit">go</button>
-            </form>
+        <form id="notes-search-form" class="js-notes-search-form">
+          <input type="text" name="searchTerm" class="js-note-search-entry" placeholder="title search">
+          <button type="submit">go</button>
+        </form>
       </header>
       <ul class="js-notes-list"></ul>
     </nav>
@@ -42,6 +32,9 @@
     <article>
       <header>
         <h2>Note</h2>
+        <form id="new-note-form" class="js-start-new-note-form">
+          <button type="submit">new +</button>
+        </form>
       </header>
       <form id="note-edit-form" class="js-note-edit-form">
         <input type="text" name="note-title" class="js-note-title-entry" required placeholder="title">
