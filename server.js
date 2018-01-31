@@ -5,13 +5,15 @@ const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
 
 const { PORT } = require('./config');
-const { requestLogger } = require('./requestLogger');
 
 const express = require('express');
+const morgan = require('morgan');
+
 const app = express();
 
 console.log('hello world!');
 
+app.use(morgan('dev'));
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -28,8 +30,6 @@ app.listen(PORT, function () {
 }).on('error', err => {
   console.error(err);
 });
-
-app.use(requestLogger);
 
 app.get('/boom', (req, res, next) => {
   throw new Error('Boom!!');
