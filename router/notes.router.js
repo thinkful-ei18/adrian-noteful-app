@@ -9,6 +9,8 @@ const data = require('../db/notes');
 const simDB = require('../db/simDB');
 const notes = simDB.initialize(data);
 
+notesRouter.use(express.json());
+
 notesRouter.get('/', (req, res, next) => {
   const { searchTerm } = req.query;
 
@@ -19,5 +21,43 @@ notesRouter.get('/', (req, res, next) => {
     res.json(list);
   });
 });
+
+notesRouter.get('/:id', (req, res, next) => {
+  const id = req.params.id;
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    }
+  });
+});
+
+notesRouter.put('/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  /***** Never trust users - validate input *****/
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
+
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+
+  notes.update(id, updateObj, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
+});
+
 
 module.exports = notesRouter;
