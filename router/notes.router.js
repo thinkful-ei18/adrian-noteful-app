@@ -74,29 +74,31 @@ notesRouter.post('/', (req, res, next) => {
     return next(err);
   }
 
-  notes.create(newItem, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
+  notes.create(newItem)
+    .then((item) => {
       res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
-    }
-  });
+    })
+    .catch((err) => {
+      return next(err);
+    });
 });
 
 notesRouter.delete('/:id', (req, res, next) => {
   const id = req.params.id;
-  notes.delete(id, (err, result) => {
-    if (err) {
-      return next(err);
-    } if (result) {
-      console.log(`Deleted a bookmark with the id \`${req.params.id}\`!`);
-      res.status(204).end();
-    } else {
-      next();
-    }
-  });
-});
 
+  notes.delete(id)
+    .then((result) => {
+      if (result) {
+        console.log(`Deleted a bookmark with the id \`${req.params.id}\`!`);
+        res.status(204).end();
+      } else {
+        next();
+      }
+    })
+
+    .catch((err) => {
+      return next(err);
+    });
+});
 
 module.exports = notesRouter;
