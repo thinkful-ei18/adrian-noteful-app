@@ -111,17 +111,21 @@ const noteful = (function () {
       const noteId = getNoteIdFromElement(event.currentTarget);
       console.log(noteId);
 
-      api.delete(noteId, () => {
-        api.search(store.currentSearchTerm, updateResponse => {
-          store.notes = updateResponse;
-          if (noteId === store.currentNote.id) {
-            store.currentNote = false;
-          }
-          render();
-        });
-      });
+      api.delete(noteId)
+        .then(() => {
+          return api.search(store.currentSearchTerm);
+        })
+        .then(
+          (updateResponse) => {
+            store.notes = updateResponse;
+            if (noteId === store.currentNote.id) {
+              store.currentNote = false;
+            }
+            render();
+          });
     });
   }
+
 
 
   function handleNoteStartNewSubmit() {
