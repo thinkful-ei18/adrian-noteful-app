@@ -14,12 +14,13 @@ notesRouter.use(express.json());
 notesRouter.get('/', (req, res, next) => {
   const { searchTerm } = req.query;
 
-  notes.filter(searchTerm, (err, list) => {
-    if (err) {
+  notes.filter(searchTerm)
+    .then((list) => {
+      res.json(list);
+    })
+    .catch((err) => {
       return next(err);
-    }
-    res.json(list);
-  });
+    });
 });
 
 notesRouter.get('/:id', (req, res, next) => {
