@@ -76,15 +76,16 @@ const noteful = (function () {
 
       if (store.currentNote.id) {
 
-        api.update(store.currentNote.id, noteObj, updateResponse => {
-          store.currentNote = updateResponse;
+        api.update(store.currentNote.id, noteObj)
+          .then(updateResponse => {
+            store.currentNote = updateResponse;
+            return api.search(store.currentSearchTerm);
+          })
 
-          api.search(store.currentSearchTerm, updateResponse => {
+          .then(updateResponse => {
             store.notes = updateResponse;
             render();
           });
-
-        });
 
       } else {
 
