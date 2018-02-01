@@ -21,18 +21,20 @@ notesRouter.get('/', (req, res, next) => {
     .catch((err) => {
       return next(err);
     });
+
 });
 
 notesRouter.get('/:id', (req, res, next) => {
   const id = req.params.id;
-  notes.find(id, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
+
+  notes.find(id)
+    .then((item) => {
       res.json(item);
-    }
-  });
+    })
+    .catch ((err) => {
+      return next(err);
+    });
+
 });
 
 notesRouter.put('/:id', (req, res, next) => {
@@ -48,16 +50,18 @@ notesRouter.put('/:id', (req, res, next) => {
     }
   });
 
-  notes.update(id, updateObj, (err, item) => {
-    if (err) {
+  notes.update(id, updateObj)
+    .then((item) => {
+      if (item) {
+        res.json(item);
+      } else {
+        next();
+      }
+    })
+    .catch((err) => {
       return next(err);
-    }
-    if (item) {
-      res.json(item);
-    } else {
-      next();
-    }
-  });
+    });
+
 });
 
 notesRouter.post('/', (req, res, next) => {
