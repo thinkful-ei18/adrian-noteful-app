@@ -89,15 +89,15 @@ const noteful = (function () {
 
       } else {
 
-        api.create(noteObj, updateResponse => {
-          store.currentNote = updateResponse;
-
-          api.search(store.currentSearchTerm, updateResponse => {
+        api.create(noteObj)
+          .then(updateResponse => {
+            store.currentNote = updateResponse;
+            return api.search(store.currentSearchTerm);
+          })
+          .then(updateResponse => {
             store.notes = updateResponse;
             render();
           });
-
-        });
       }
 
     });
