@@ -31,7 +31,7 @@ describe('notesRouter', function () {
   });
 
   it('should GET a specific note', function () {
-    const randomID = Math.floor(Math.random() * 10) + 999;
+    const randomID = Math.floor(Math.random() * 10) + 1000;
     return chai.request(app)
       .get(`/v1/notes/${randomID}`)
       .then(function (res) {
@@ -45,18 +45,26 @@ describe('notesRouter', function () {
   });
 });
 
-// it('should modify the `title` and `content` of a note', function () {
-//   const testNote = {
-//     title: 'How many cats does it take to change a lightbulb?',
-//     content: 'A whole litter *ba-dum tssss*'
-//   };
+it('should modify the `title` and `content` of a note', function () {
+  const testNote = {
+    title: 'How many cats does it take to change a lightbulb?',
+    content: 'A whole litter *ba-dum tssss*'
+  };
 
-//   return chai.request(app)
-//     .get('/v1/notes')
-//     .then(function (res) {
-      
-//     });
+  const randomID = Math.floor(Math.random() * 10) + 1000;
+  testNote.id = randomID;
 
-// });
+  return chai.request(app)
+    .put(`/v1/notes/${randomID}`)
+    .send(testNote)
+    .then(function(res) {
+      expect(res).to.have.status(200);
+      expect(res).to.be.json;
+      expect(res.body).to.be.a('object');
+      expect(res.body).to.deep.equal(testNote);
+    });
+});
+
+
 
 
