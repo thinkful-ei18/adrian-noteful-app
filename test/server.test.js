@@ -1,17 +1,24 @@
 'use strict';
 
+const app = require('../server');
 const chai = require('chai');
+const spy = require('chai-spies');
+const chaiHttp = require('chai-http');
 
 const expect = chai.expect;
 
-describe('Reality check', function () {
+chai.use(chaiHttp);
+chai.use(spy);
 
-  it('true should be true', function () {
-    expect(true).to.be.true;
-  });
+// describe('Reality check', function () {
 
-  it('2 + 2 should equal 4', function () {
-    expect(2 + 2).to.equal(4);
-  });
+//   it('true should be true', function () {
+//     expect(true).to.be.true;
+//   });
 
-});
+//   it('2 + 2 should equal 4', function () {
+//     expect(2 + 2).to.equal(4);
+//   });
+
+// });
+
