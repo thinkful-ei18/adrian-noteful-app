@@ -46,25 +46,44 @@ describe('notesRouter', function () {
 });
 
 it('should modify the `title` and `content` of a note', function () {
-  const testNote = {
+  const updatedNote = {
     title: 'How many cats does it take to change a lightbulb?',
     content: 'A whole litter *ba-dum tssss*'
   };
 
   const randomID = Math.floor(Math.random() * 10) + 1000;
-  testNote.id = randomID;
+  updatedNote.id = randomID;
 
   return chai.request(app)
     .put(`/v1/notes/${randomID}`)
-    .send(testNote)
+    .send(updatedNote)
     .then(function(res) {
       expect(res).to.have.status(200);
       expect(res).to.be.json;
       expect(res.body).to.be.a('object');
-      expect(res.body).to.deep.equal(testNote);
+      expect(res.body).to.deep.equal(updatedNote);
     });
 });
 
+it('should create a new item', function () {
+  const newNote = {
+    title: 'A new era for cats',
+    content: 'A new day for catnip!'
+  };
 
+  return chai.request(app)
+    .post('/v1/notes/')
+    .send(newNote)
+    .then(function (res) {
+      expect(res).to.have.status(201);
+      expect(res).to.be.json;
+      expect(res.body).to.be.a('object');
+
+      expect(res.body.id).to.not.equal(null);
+      expect(res.body).to.include.keys('title', 'content');
+
+      expect(res.body).to.deep.equal(Object.assign(newNote, {id: res.body.id}));
+    });
+});
 
 
