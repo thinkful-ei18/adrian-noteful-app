@@ -28,14 +28,18 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.listen(PORT, function () {
-  console.info(`Server listening on ${this.address().port}`);
-}).on('error', err => {
-  console.error(err);
-});
+if (require.main === module) {
+  app.listen(PORT, function () {
+    console.info(`Server listening on ${this.address().port}`);
+  }).on('error', err => {
+    console.error(err);
+  });
+}
 
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   res.status(404).json({ message: 'You got 404 problems but this page ain\'t one because it isn\'t real!' });
 });
+
+module.exports = app;

@@ -94,7 +94,10 @@ const noteful = (function () {
       }
 
     });
+
   }
+
+  // UpdateNote and UpdateNotes List for .thenables
 
   function updateNote (updateResponse) {
     store.currentNote = updateResponse;
