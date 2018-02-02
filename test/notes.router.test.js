@@ -11,6 +11,7 @@ chai.use(chaiHttp);
 chai.use(spy);
 
 describe('notesRouter', function () {
+
   it('should GET the entire list of notes', function () {
     return chai.request(app)
       .get('/v1/notes')
@@ -28,4 +29,34 @@ describe('notesRouter', function () {
         });
       });
   });
+
+  it('should GET a specific note', function () {
+    const randomID = Math.floor(Math.random() * 10) + 999;
+    return chai.request(app)
+      .get(`/v1/notes/${randomID}`)
+      .then(function (res) {
+
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+
+        expect(res.body.id).to.deep.equal(randomID);
+      });
+  });
 });
+
+// it('should modify the `title` and `content` of a note', function () {
+//   const testNote = {
+//     title: 'How many cats does it take to change a lightbulb?',
+//     content: 'A whole litter *ba-dum tssss*'
+//   };
+
+//   return chai.request(app)
+//     .get('/v1/notes')
+//     .then(function (res) {
+      
+//     });
+
+// });
+
+
