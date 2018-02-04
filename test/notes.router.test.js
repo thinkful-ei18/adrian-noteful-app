@@ -30,7 +30,7 @@ describe('notesRouter', function () {
       });
   });
 
-  it.only('returns a 404 error when given a bad path', function () {
+  it('returns a 404 error when given a bad path', function () {
     const spy = chai.spy();
     return chai.request(app)
       .get('/bad/path')
@@ -58,14 +58,17 @@ describe('notesRouter', function () {
       });
   });
 
-  // it('return an error for bad note ID that don\'t exist', function () {
-  //   const randomID = Math.floor(Math.random() * 10) + 1015;
-  //   return chai.request(app)
-  //     .get(`/v1/notes/${randomID}`)
-  //     .then(function (res) {
-  //       expect(res).to.have.status(404);
-  //     });
-  // });
+  it('will not return a note if ID doesn\'t exist', function () {
+    const randomID = Math.floor(Math.random() * 10) + 2000;
+    return chai.request(app)
+      .get(`/v1/notes/${randomID}`)
+      .then (function (res) {
+        expect(res).to.be.json;
+      })
+      .catch(err => {
+        expect(err.response).to.have.status(err.status || 500);
+      });
+  });
 
 
   it('modifies the `title` and `content` of a note', function () {
@@ -85,6 +88,26 @@ describe('notesRouter', function () {
         expect(res).to.be.json;
         expect(res.body).to.be.a('object');
         expect(res.body).to.deep.equal(updatedNote);
+      });
+  });
+
+  it.only('returns a 404 error for a bad note ID', function () {
+    const updatedNote = {
+      title: 'Can cats run for president?',
+      content: 'At this point, anything is possible! *ba-dum tssss*'
+    };
+
+    const randomID = Math.floor(Math.random() * 10) + 2000;
+    updatedNote.id = randomID;
+    return chai.request(app)
+      .put(`/v1/notes/${randomID}`)
+      .send(updatedNote)
+      .then (function (res) {
+        expect(res).to.be.json;
+        expect(res.body.id).to.not.equal(updatedNote.id);
+      })
+      .catch(err => {
+        expect(err.response).to.have.status(404);
       });
   });
 
