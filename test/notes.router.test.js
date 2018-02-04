@@ -30,18 +30,18 @@ describe('notesRouter', function () {
       });
   });
 
-  // it('should return a 404 error when given a bad path', function () {
-  //   const spy = chai.spy();
-  //   return chai.request(app)
-  //     .get('/bad/path')
-  //     .then(spy)
-  //     .then(() => {
-  //       expect(spy).to.not.have.been.called();
-  //     })
-  //     .catch(err => {
-  //       expect(err.response).to.have.status(404);
-  //     });
-  // });
+  it.only('returns a 404 error when given a bad path', function () {
+    const spy = chai.spy();
+    return chai.request(app)
+      .get('/bad/path')
+      .then(spy)
+      .then(() => {
+        expect(spy).to.not.have.been.called();
+      })
+      .catch(err => {
+        expect(err.response).to.have.status(404);
+      });
+  });
 
 
   it('GETs a specific note', function () {
@@ -57,6 +57,15 @@ describe('notesRouter', function () {
         expect(res.body.id).to.deep.equal(randomID);
       });
   });
+
+  // it('return an error for bad note ID that don\'t exist', function () {
+  //   const randomID = Math.floor(Math.random() * 10) + 1015;
+  //   return chai.request(app)
+  //     .get(`/v1/notes/${randomID}`)
+  //     .then(function (res) {
+  //       expect(res).to.have.status(404);
+  //     });
+  // });
 
 
   it('modifies the `title` and `content` of a note', function () {
