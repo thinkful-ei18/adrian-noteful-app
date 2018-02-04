@@ -60,13 +60,16 @@ describe('notesRouter', function () {
 
   it('will not return a note if ID doesn\'t exist', function () {
     const randomID = Math.floor(Math.random() * 10) + 2000;
+    const spy = chai.spy();
+
     return chai.request(app)
       .get(`/v1/notes/${randomID}`)
-      .then (function (res) {
-        expect(res).to.be.json;
+      .then(spy)
+      .then(() => {
+        expect(spy).to.not.have.been.called();
       })
       .catch(err => {
-        expect(err.response).to.have.status(err.status || 500);
+        expect(err.response).to.have.status(404);
       });
   });
 
@@ -79,7 +82,7 @@ describe('notesRouter', function () {
 
     const randomID = Math.floor(Math.random() * 10) + 1000;
     updatedNote.id = randomID;
- 
+
     return chai.request(app)
       .put(`/v1/notes/${randomID}`)
       .send(updatedNote)
@@ -91,7 +94,7 @@ describe('notesRouter', function () {
       });
   });
 
-  it.only('returns a 404 error for a bad note ID', function () {
+  it.only('returns a 404 error when trying to GET a bad note ID', function () {
     const updatedNote = {
       title: 'Can cats run for president?',
       content: 'At this point, anything is possible! *ba-dum tssss*'
