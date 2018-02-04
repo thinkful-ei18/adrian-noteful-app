@@ -94,7 +94,7 @@ describe('notesRouter', function () {
       });
   });
 
-  it.only('returns a 404 error when trying to GET a bad note ID', function () {
+  it('returns an error when trying to modify a note with a bad ID', function () {
     const updatedNote = {
       title: 'Can cats run for president?',
       content: 'At this point, anything is possible! *ba-dum tssss*'
@@ -114,7 +114,7 @@ describe('notesRouter', function () {
       });
   });
 
-  it('creates a new item', function () {
+  it('creates a new note', function () {
     const newNote = {
       title: 'A new era for cats',
       content: 'A new day for catnip!'
@@ -135,6 +135,8 @@ describe('notesRouter', function () {
       });
   });
 
+  // Test the endpoint for a POST request that does not pass validation.
+
   it('permanently deletes an item', function () {
     const randomID = Math.floor(Math.random() * 10) + 1000;
 
@@ -144,5 +146,7 @@ describe('notesRouter', function () {
         expect(res).to.have.status(204);
       });
   });
+
+  // Test the endpoint for a bad delete request that tries to delete a note ID that doesn't exist.
 
 });
