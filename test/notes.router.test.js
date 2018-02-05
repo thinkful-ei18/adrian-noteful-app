@@ -58,21 +58,10 @@ describe('notesRouter', function () {
       });
   });
 
-  it('will not return a note if ID doesn\'t exist', function () {
-    const randomID = Math.floor(Math.random() * 10) + 2000;
-    const spy = chai.spy();
-
-    return chai.request(app)
-      .get(`/v1/notes/${randomID}`)
-      .then(spy)
-      .then(() => {
-        expect(spy).to.not.have.been.called();
-      })
-      .catch(err => {
-        expect(err.response).to.have.status(404);
-      });
-  });
-
+  // Test the endpoint for a get request for an ID that does not exist.
+  // object.keys(obj).length === 0
+  // expect an empty object, 0 res body length, and that returned object has no keys
+  // should.not.exist();
 
   it('modifies the `title` and `content` of a note', function () {
     const updatedNote = {
