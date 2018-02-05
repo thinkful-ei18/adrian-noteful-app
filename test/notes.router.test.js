@@ -1,5 +1,7 @@
 'use strict';
 
+// added automatic deployment with Travis and Heroku
+
 const app = require('../server');
 const chai = require('chai');
 const spy = require('chai-spies');
