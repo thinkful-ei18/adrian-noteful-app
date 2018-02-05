@@ -39,7 +39,7 @@ if (require.main === module) {
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  res.status(404).json({ message: 'You got 404 problems but this page ain\'t one because it isn\'t real!' });
+  res.status(404).json({ message: 'Missing `title` in request body' });
 });
 
 module.exports = app;

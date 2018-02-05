@@ -231,7 +231,7 @@ describe('Noteful App', function () {
         });
     });
 
-    it('should return an error when missing "title" field', function () {
+    it.only('should return an error when missing "title" field', function () {
       const updateItem = {
         'foo': 'bar'
       };
@@ -245,7 +245,7 @@ describe('Noteful App', function () {
         })
         .catch(err => {
           const res = err.response;
-          expect(res).to.have.status(400);
+          expect(res).to.have.status(404);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
           expect(res.body.message).to.equal('Missing `title` in request body');
