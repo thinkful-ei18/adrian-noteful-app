@@ -231,7 +231,7 @@ describe('Noteful App', function () {
         });
     });
 
-    it.only('should return an error when missing "title" field', function () {
+    it('should return an error when missing "title" field', function () {
       const updateItem = {
         'foo': 'bar'
       };
