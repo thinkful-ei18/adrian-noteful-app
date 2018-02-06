@@ -6,7 +6,6 @@
  * They do not verify the responses against the data in the database. We will learn
  * how to crosscheck the API responses against the database in a later exercise.
  */
-
 const app = require('../server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -213,19 +212,9 @@ describe('Noteful App', function () {
         });
     });
 
-    it('should respond with a 404 for an invalid id', function () {
-      const updateItem = {
-        'title': 'What about dogs?!',
-        'content': 'woof woof'
-      };
-      const spy = chai.spy();
+    it.only('should respond with a 404 for an invalid id', function () {
       return chai.request(app)
-        .put('/v1/notes/9999')
-        .send(updateItem)
-        .then(spy)
-        .then(() => {
-          expect(spy).to.not.have.been.called();
-        })
+        .get('/v1/notes/9999')
         .catch(err => {
           expect(err.response).to.have.status(404);
         });
