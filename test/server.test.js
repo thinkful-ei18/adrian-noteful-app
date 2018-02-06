@@ -129,19 +129,6 @@ describe('Noteful App', function () {
         });
     });
 
-    it('should respond with a 404 for an invalid id', function () {
-      const spy = chai.spy();
-      return chai.request(app)
-        .get('/v1/notes/9999')
-        .then(spy)
-        .then(() => {
-          expect(spy).to.not.have.been.called();
-        })
-        .catch(err => {
-          expect(err.response).to.have.status(404);
-        });
-    });
-
   });
 
   describe('POST /v1/notes', function () {
