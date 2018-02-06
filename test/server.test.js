@@ -212,7 +212,7 @@ describe('Noteful App', function () {
         });
     });
 
-    it.only('should respond with a 404 for an invalid id', function () {
+    it('should respond with a 404 for an invalid id', function () {
       return chai.request(app)
         .get('/v1/notes/9999')
         .catch(err => {
